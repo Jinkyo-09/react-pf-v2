@@ -9,11 +9,9 @@ export default function Contact() {
 		center: new kakao.maps.LatLng(37.58491, 126.8856),
 		level: 1,
 	};
-	//마커가 출력될 인스턴스 객체 생성
-	const markerPosition = new kakao.maps.LatLng(37.58491, 126.8856);
 	//마커 위치 인스턴스를 인술 전달해서 마커 출렷 인스턴스 객체를 생성
 	const marker = new kakao.maps.Marker({
-		position: markerPosition,
+		position: mapOption.center,
 	});
 
 	useEffect(() => {
