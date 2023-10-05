@@ -43,20 +43,20 @@ export default function Youtube() {
 
 	return (
 		<>
-			<Modal setIsModal={setIsModal}></Modal>
 			<Layout title={'Youtube'}>
 				{Youtube.map((data, idx) => {
 					return (
 						<article key={idx}>
 							<h2 onClick={() => console.log(refEl)}>{data.snippet.title}</h2>
 							<p ref={refEl}>{data.snippet.description}</p>
-							<div className='pic' onClick={() => setIsModal(true)}>
+							<div className='pic' onClick={() => refEl.current.open()}>
 								<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
 							</div>
 						</article>
 					);
 				})}
 			</Layout>
+			<Modal setIsModal={setIsModal} ref={refEl}></Modal>
 		</>
 	);
 }
