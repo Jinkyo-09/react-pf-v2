@@ -2,9 +2,11 @@
 	figure {
 		background: orange;
 	}
-	.map {
+	.map,
+	view {
 		width: 100%;
-		height: 50vh;
+		height: 70vh;
 		background-color: #111;
+		margin-bottom: 100px;
 	}
 }
