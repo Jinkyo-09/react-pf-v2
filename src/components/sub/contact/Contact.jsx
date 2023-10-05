@@ -6,7 +6,8 @@ export default function Contact() {
 	const map = useRef(null);
 	const { kakao } = window; //현재 카카오 객체를 cdn으로 가져오고 있기 때문에 리액트 컴포넌트 안쪽에서 윈도우 객체로부터 카카오 객체를 비구조화할당을 이용해서 수동으로 꺼내옴
 	const mapOption = {
-		center: new kakao.maps.LatLng(37.58491, 126.8856),
+		center: new kakao.maps.LatLng(37.584761279713774, 126.88557369799524),
+		//카카오맵api 샘플에서 클릭한 위치에 마커 생성하기->직접 해보기에서 좌표를 찍으면 더 자세한 좌표를 구할수 있음
 		level: 1,
 	};
 	//마커 위치 인스턴스를 인술 전달해서 마커 출렷 인스턴스 객체를 생성
