@@ -1,4 +1,5 @@
 import Layout from '../../common/layout/Layout';
+import Modal from '../../common/modal/Modal';
 import './Youtube.module.scss';
 import { useEffect, useState } from 'react';
 
@@ -8,6 +9,7 @@ export default function Youtube() {
 	const fetchYoutube = () => {
 		const api_key = process.env.REACT_APP_YOUTUBE_API;
 		const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+		//const pid = 'PLHtvRFLN5v-W5bQjvyH8QTdQQhgflJ3nu';
 		const pid = 'PL2pfG9YtKxMJVwlAjAIV9TBF5-44WnQ-q';
 		const num = 5;
 		const resultURL = `${baseURL}?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
@@ -15,7 +17,7 @@ export default function Youtube() {
 		fetch(resultURL)
 			.then((data) => data.json())
 			.then((json) => {
-				console.log(json.items);
+				console.log(json);
 				setYoutube(json.items);
 			});
 	};
@@ -25,18 +27,21 @@ export default function Youtube() {
 	}, []);
 
 	return (
-		<Layout title={'Youtube'}>
-			{Youtube.map((data, idx) => {
-				return (
-					<article key={idx}>
-						<h2>{data.snippet.title}</h2>
-						<p>{data.snippet.description}</p>
-						<div className='pic'>
-							<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
-						</div>
-					</article>
-				);
-			})}
-		</Layout>
+		<>
+			<Layout title={'Youtube'}>
+				{Youtube.map((data, idx) => {
+					return (
+						<article key={idx}>
+							<h2>{data.snippet.title}</h2>
+							<p>{data.snippet.description}</p>
+							<div className='pic'>
+								<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
+							</div>
+						</article>
+					);
+				})}
+			</Layout>
+			<Modal></Modal>
+		</>
 	);
 }
