@@ -10,9 +10,16 @@ export default function Contact() {
 		//카카오맵api 샘플에서 클릭한 위치에 마커 생성하기->직접 해보기에서 좌표를 찍으면 더 자세한 좌표를 구할수 있음
 		level: 1,
 	};
+
+	const imageSrc = `${process.env.PUBLIC_URL}/img/marker1.png`;
+	const imageSize = new kakao.maps.Size(232, 99);
+	const imageOption = { offset: new kakao.maps.Point(0, 0) };
+	const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
 	//마커 위치 인스턴스를 인술 전달해서 마커 출렷 인스턴스 객체를 생성
 	const marker = new kakao.maps.Marker({
 		position: mapOption.center,
+		image: markerImage,
 	});
 
 	useEffect(() => {
