@@ -41,10 +41,15 @@ export default function Youtube() {
 		<>
 			<Layout title={'Youtube'}>
 				{Youtube.map((data, idx) => {
+					let tit = data.snippet.title;
+					let dsc = data.snippet.description;
+					let date = data.snippet.publishedAt;
+
 					return (
 						<article key={idx}>
-							<h2>{data.snippet.title}</h2>
-							<p>{data.snippet.description}</p>
+							<h2>{tit.length > 60 ? tit.substr(0, 60) + '...' : tit}</h2>
+							<p>{dsc.length > 200 ? tit.substr(0, 200) + '...' : tit}</p>
+							<p>{date.split('T')[0].split('-').join('.')}</p>
 							<div
 								className='pic'
 								onClick={() => {
