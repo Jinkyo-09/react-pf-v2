@@ -1,7 +1,7 @@
 import Layout from '../../common/layout/Layout';
 import Modal from '../../common/modal/Modal';
 import './Youtube.module.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 /**
 	리액트는 단방향 데이터 바인딩
@@ -11,9 +11,13 @@ import { useEffect, useState } from 'react';
 	리액트에서 자식 컴포넌트에서는 직접적으로 부모컴포넌트의 state값 변경이 불가
 	- 해결방법 : 부모의 state변경함수를 자식컴포넌트로 전달
 	-자식 컴포넌트에서는 전달받은 state변경함수로 간접적으로 부모 state값 변경 가능
+
+	useRef로 jsx는 참조객체에 담을수 있음
+	컴포넌트는 useRef를 통한 참조객체를 담는 것이 불가
  */
 
 export default function Youtube() {
+	const refEl = useRef(null);
 	const [Youtube, setYoutube] = useState([]);
 	const [IsModal, setIsModal] = useState(false);
 
@@ -39,12 +43,13 @@ export default function Youtube() {
 
 	return (
 		<>
+			<Modal setIsModal={setIsModal}></Modal>
 			<Layout title={'Youtube'}>
 				{Youtube.map((data, idx) => {
 					return (
 						<article key={idx}>
-							<h2>{data.snippet.title}</h2>
-							<p>{data.snippet.description}</p>
+							<h2 onClick={() => console.log(refEl)}>{data.snippet.title}</h2>
+							<p ref={refEl}>{data.snippet.description}</p>
 							<div className='pic' onClick={() => setIsModal(true)}>
 								<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
 							</div>
@@ -52,12 +57,6 @@ export default function Youtube() {
 					);
 				})}
 			</Layout>
-			{IsModal && (
-				<Modal setIsModal={setIsModal}>
-					<h1>팝업</h1>
-				</Modal>
-			)}
-			)}
 		</>
 	);
 }
