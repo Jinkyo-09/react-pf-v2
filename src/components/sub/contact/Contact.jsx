@@ -91,6 +91,10 @@ export default function Contact() {
 	const sendEmail = (e) => {
 		e.preventDefault();
 
+		const [nameKey, nameValue, mailKey, mailValue, massegeKey, massegeValue] = form.current.children;
+
+		if (!nameValue.value || !mailValue.value || !massegeValue.value) return alert('사용자 이름, 이메일 주소, 문의내용은 필수 입력사항입니다.');
+
 		emailjs
 			.sendForm(`${process.env.REACT_APP_SERVICE_ID}`, `${process.env.REACT_APP_TEMPLATE_ID}`, form.current, `${process.env.REACT_APP_PUBLIC_KEY}`)
 			.then(
@@ -110,13 +114,20 @@ export default function Contact() {
 		<Layout title={'Contact'}>
 			<div id='mailbox'>
 				<form ref={form} onSubmit={sendEmail}>
-					<label>Name</label>
-					<input type='text' name='user_name' />
-					<label>Email</label>
-					<input type='email' name='user_email' />
-					<label>Message</label>
-					<textarea name='message' />
-					<input type='submit' value='Send' />
+					<div className='upper'>
+						<label>Name</label>
+						<input type='text' name='user_name' />
+						<label>Email</label>
+						<input type='email' name='user_email' />
+					</div>
+					<div className='lower'>
+						<label>Message</label>
+						<textarea name='message' />
+					</div>
+					<div btnset>
+						<input type='reset' value='Cancel' />
+						<input type='submit' value='Send' />
+					</div>
 				</form>
 			</div>
 
