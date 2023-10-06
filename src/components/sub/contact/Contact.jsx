@@ -83,14 +83,17 @@ export default function Contact() {
 	const sendEmail = (e) => {
 		e.preventDefault();
 
-		emailjs.sendForm('service_mck2nd6', 'template_apsuksq', form.current, 'M2Vqv56zeTyK8sl6d').then(
-			(result) => {
-				alert('문의내용이 메일로 발송되었습니다.');
-			},
-			(error) => {
-				alert('문의내용 전송에 실패했습니다.');
-			}
-		);
+		emailjs
+			.sendForm(`${process.env.REACT_APP_SERVICE_ID}`, `${process.env.REACT_APP_TEMPLATE_ID}`, form.current, `${process.env.REACT_APP_PUBLIC_KEY}`)
+			.then(
+				(result) => {
+					alert('문의내용이 메일로 발송되었습니다.');
+				},
+				(error) => {
+					alert('문의내용 전송에 실패했습니다.');
+					console.log(error);
+				}
+			);
 	};
 
 	return (
