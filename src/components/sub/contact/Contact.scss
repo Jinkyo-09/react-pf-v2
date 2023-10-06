@@ -11,5 +11,11 @@
 
 	ul {
 		cursor: pointer;
+		display: flex;
+		gap: 40px;
+
+		li.on {
+			color: orange;
+		}
 	}
 }
