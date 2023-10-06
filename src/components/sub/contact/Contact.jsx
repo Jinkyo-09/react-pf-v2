@@ -62,7 +62,7 @@ export default function Contact() {
 
 		//지도 타입 변경 UI추가
 		const mapTypeControl = new kakao.maps.MapTypeControl();
-		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMLEFT);
+		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 		window.addEventListener('resize', setCenter);
 
 		//로드뷰 관련 코드
@@ -92,7 +92,14 @@ export default function Contact() {
 
 			<ul>
 				{info.current.map((el, idx) => (
-					<li className={Index === idx ? 'on' : ''} key={idx} onClick={() => setIndex(idx)}>
+					<li
+						className={Index === idx ? 'on' : ''}
+						key={idx}
+						onClick={() => {
+							setIndex(idx);
+							setIsMap(true);
+						}}
+					>
 						{el.title}
 					</li>
 				))}
