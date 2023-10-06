@@ -81,19 +81,22 @@ export default function Contact() {
 	}, [Traffic]);
 
 	const resetForm = () => {
-		const [nameKey, nameValue, mailKey, mailValue, massegeKey, massegeValue] = form.current.children;
-
-		nameValue.value = '';
-		mailValue.value = '';
-		massegeValue.value = '';
+		const nameForm = form.current.querySelector('.nameEl');
+		const mailForm = form.current.querySelector('.emailEl');
+		const msgForm = form.current.querySelector('.msgEl');
+		nameForm.value = '';
+		mailForm.value = '';
+		msgForm.value = '';
 	};
 
 	const sendEmail = (e) => {
 		e.preventDefault();
 
-		const [nameKey, nameValue, mailKey, mailValue, massegeKey, massegeValue] = form.current.children;
+		const nameForm = form.current.querySelector('.nameEl');
+		const mailForm = form.current.querySelector('.emailEl');
+		const msgForm = form.current.querySelector('.msgEl');
 
-		if (!nameValue.value || !mailValue.value || !massegeValue.value) return alert('사용자 이름, 이메일 주소, 문의내용은 필수 입력사항입니다.');
+		if (!nameForm.value || !mailForm.value || !msgForm.value) return alert('사용자이름, 이메일주소, 문의내용은 필수 입력사항입니다.');
 
 		emailjs
 			.sendForm(`${process.env.REACT_APP_SERVICE_ID}`, `${process.env.REACT_APP_TEMPLATE_ID}`, form.current, `${process.env.REACT_APP_PUBLIC_KEY}`)
@@ -116,15 +119,17 @@ export default function Contact() {
 				<form ref={form} onSubmit={sendEmail}>
 					<div className='upper'>
 						<label>Name</label>
-						<input type='text' name='user_name' />
+						<input type='text' name='user_name' className='nameEl' />
 						<label>Email</label>
-						<input type='email' name='user_email' />
+						<input type='email' name='user_email' className='emailEl' />
 					</div>
+
 					<div className='lower'>
 						<label>Message</label>
-						<textarea name='message' />
+						<textarea name='message' className='msgEl' />
 					</div>
-					<div btnset>
+
+					<div className='btnSet'>
 						<input type='reset' value='Cancel' />
 						<input type='submit' value='Send' />
 					</div>
