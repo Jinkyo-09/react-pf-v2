@@ -42,6 +42,11 @@ export default function Contact() {
 		image: new kakao.maps.MarkerImage(info.current[Index].imgSrc, info.current[Index].imgSize, info.current[Index].imgPos),
 	});
 
+	const setCenter = () => {
+		// 지도 중심을 이동 시킵니다
+		instance.current.setCenter(info.current[Index].latlng);
+	};
+
 	useEffect(() => {
 		//인덱스 값이 변경될때마다 새로운 지도 레이어가 중첩되므로 일단은 기존 map안의 모든 요소를 없애서 초기화
 		map.current.innerHTML = '';
@@ -57,6 +62,7 @@ export default function Contact() {
 		//지도 타입 변경 UI추가
 		const mapTypeControl = new kakao.maps.MapTypeControl();
 		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+		window.addEventListener('resize', setCenter);
 	}, [Index]); //인덱스값이 변경될때마다 지도화면이 다시 갱신되어야
 
 	useEffect(() => {
@@ -69,6 +75,7 @@ export default function Contact() {
 	return (
 		<Layout title={'Contact'}>
 			<button onClick={() => setTraffic(!Traffic)}>{Traffic ? '교통정보 끄기' : '교통정보 켜기'}</button>
+			<button onClick={setCenter}>지도 위치 초기화</button>
 			<div className='map' ref={map}></div>
 
 			<ul>
