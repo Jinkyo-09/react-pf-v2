@@ -9,6 +9,7 @@ export default function Contact() {
 	const instance = useRef(null);
 	const [Traffic, setTraffic] = useState(false);
 	const [Index, setIndex] = useState(2);
+	const [IsMap, setIsMap] = useState(false);
 
 	const { kakao } = window;
 	//첫번째 지도를 출력하기 위한 객체정보
@@ -82,9 +83,12 @@ export default function Contact() {
 			<button onClick={() => setTraffic(!Traffic)}>{Traffic ? '교통정보 끄기' : '교통정보 켜기'}</button>
 
 			<button onClick={setCenter}>지도 위치 초기화</button>
+			<button onClick={() => setIsMap(!IsMap)}>{IsMap ? '로드뷰보기' : '지도보기'}</button>
 
-			<div className='map' ref={map}></div>
-			<div className='view' ref={view}></div>
+			<div className='container'>
+				<div className={`view ${IsMap ? '' : 'on'}`} ref={view}></div>
+				<div className={`map ${IsMap ? 'on' : ''}`} ref={map}></div>
+			</div>
 
 			<ul>
 				{info.current.map((el, idx) => (
