@@ -4,12 +4,13 @@
 	}
 
 	#mailbox {
-		width: 50%;
+		width: 60%;
 		margin-bottom: 100px;
 
 		.upper {
 			width: 100%;
 			display: flex;
+			margin-top: 10px;
 			margin-bottom: 50px;
 
 			label {
@@ -73,7 +74,9 @@
 				display: block;
 				height: 40px;
 				background-color: transparent;
-				border: 1px solid #555;
+				border: none;
+				cursor: pointer;
+				//border: 1px solid #555;
 				font: 1rem/40px 'arial';
 			}
 		}
