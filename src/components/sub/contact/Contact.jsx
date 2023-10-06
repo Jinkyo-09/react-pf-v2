@@ -80,6 +80,14 @@ export default function Contact() {
 			: instance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
 	}, [Traffic]);
 
+	const resetForm = () => {
+		const [nameKey, nameValue, mailKey, mailValue, massegeKey, massegeValue] = form.current.children;
+
+		nameValue.value = '';
+		mailValue.value = '';
+		massegeValue.value = '';
+	};
+
 	const sendEmail = (e) => {
 		e.preventDefault();
 
@@ -88,10 +96,12 @@ export default function Contact() {
 			.then(
 				(result) => {
 					alert('문의내용이 메일로 발송되었습니다.');
+					resetForm();
 				},
 				(error) => {
 					alert('문의내용 전송에 실패했습니다.');
 					console.log(error);
+					resetForm();
 				}
 			);
 	};
