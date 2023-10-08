@@ -11,7 +11,7 @@ export default function Contact() {
 	const instance = useRef(null);
 	const [Traffic, setTraffic] = useState(false);
 	const [Index, setIndex] = useState(2);
-	const [IsMap, setIsMap] = useState(false);
+	const [IsMap, setIsMap] = useState(true);
 
 	const { kakao } = window;
 	//첫번째 지도를 출력하기 위한 객체정보
@@ -42,7 +42,11 @@ export default function Contact() {
 	//위의 정보값을 활용한 마커 객체 생성
 	const marker = new kakao.maps.Marker({
 		position: info.current[Index].latlng,
-		image: new kakao.maps.MarkerImage(info.current[Index].imgSrc, info.current[Index].imgSize, info.current[Index].imgPos),
+		image: new kakao.maps.MarkerImage(
+			info.current[Index].imgSrc,
+			info.current[Index].imgSize,
+			info.current[Index].imgPos
+		),
 	});
 
 	const setCenter = () => {
@@ -96,10 +100,16 @@ export default function Contact() {
 		const mailForm = form.current.querySelector('.emailEl');
 		const msgForm = form.current.querySelector('.msgEl');
 
-		if (!nameForm.value || !mailForm.value || !msgForm.value) return alert('사용자이름, 이메일주소, 문의내용은 필수 입력사항입니다.');
+		if (!nameForm.value || !mailForm.value || !msgForm.value)
+			return alert('사용자이름, 이메일주소, 문의내용은 필수 입력사항입니다.');
 
 		emailjs
-			.sendForm(`${process.env.REACT_APP_SERVICE_ID}`, `${process.env.REACT_APP_TEMPLATE_ID}`, form.current, `${process.env.REACT_APP_PUBLIC_KEY}`)
+			.sendForm(
+				`${process.env.REACT_APP_SERVICE_ID}`,
+				`${process.env.REACT_APP_TEMPLATE_ID}`,
+				form.current,
+				`${process.env.REACT_APP_PUBLIC_KEY}`
+			)
 			.then(
 				(result) => {
 					alert('문의내용이 메일로 발송되었습니다.');
@@ -137,7 +147,9 @@ export default function Contact() {
 			</div>
 
 			<div id='mapbox'>
-				<button onClick={() => setTraffic(!Traffic)}>{Traffic ? '교통정보 끄기' : '교통정보 켜기'}</button>
+				<button onClick={() => setTraffic(!Traffic)}>
+					{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
+				</button>
 
 				<button onClick={setCenter}>지도 위치 초기화</button>
 				<button onClick={() => setIsMap(!IsMap)}>{IsMap ? '로드뷰보기' : '지도보기'}</button>
