@@ -7,7 +7,7 @@ export default function Gallery() {
 	const refFrame = useRef(null);
 	const refInput = useRef(null);
 	const [Pics, setPics] = useState([]);
-	const [Loader, setLoader] = useState(false);
+	const [Loader, setLoader] = useState(true);
 	const my_id = '199299808@N06';
 
 	const fetchData = async (opt) => {
@@ -16,7 +16,7 @@ export default function Gallery() {
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
-		const num = 100;
+		const num = 200;
 
 		if (opt.type === 'interest') {
 			url = `https://www.flickr.com/services/rest/?method=${method_interest}&api_key=${api_key}&per_page=${num}&nojsoncallback=1&format=json`;
@@ -50,9 +50,11 @@ export default function Gallery() {
 		imgs.forEach((img, idx) => {
 			img.onload = () => {
 				++count;
-				console.log('현재 로딩된 이미지 개수', count);
+				console.log('현재 로딩된 img갯수', count);
 				if (count === imgs.length) {
-					console.log('모든 이미지 소스 랜더링 완료');
+					console.log('모든 이미지 소스 렌더링 완료!');
+					//모든 소스이미지라 렌더링완료되면 Loader값을 false로 바꿔서 로딩이미지 제거
+					setLoader(false);
 				}
 			};
 		});
@@ -72,9 +74,7 @@ export default function Gallery() {
 			<div className='searchBox'>
 				<form
 					onSubmit={(e) => {
-						//submit이벤트의 기본 서버 전송기능을 막아줌
 						e.preventDefault();
-						//문자열.trim() : 문자열앞뒤로 빈칸을 제거해서 정리
 						if (refInput.current.value.trim() === '') {
 							return alert('검색어를 입력하세요.');
 						}
@@ -93,44 +93,40 @@ export default function Gallery() {
 				<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
 			</div>
 
-			{Loader ? (
-				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
-			) : (
-				<div className='picFrame' ref={refFrame}>
-					<Masonry
-						elementType={'div'} // masonry 컴포넌트가 변환될 태그명 지정
-						options={{ transitionDuration: '0.5s' }} // 박스 모션시 트랜지션 시간 설정
-						disableImagesLoaded={false} // true 이미지 로딩처리 안함
-						updateOnEachImageLoad={false} // true 각 이미지의 로딩 처리 안함
-					>
-						{Pics.map((data, idx) => {
-							return (
-								<article key={idx}>
-									<div className='inner'>
-										<img
-											className='pic'
-											src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
-											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
-										/>
-										<h2>{data.title}</h2>
+			{/* Loader가 true일때에만 로딩 이미지 출력 */}
+			{Loader && <img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />}
 
-										<div className='profile'>
-											<img
-												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
-												alt={data.owner}
-												onError={(e) => {
-													e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif');
-												}}
-											/>
-											<span onClick={() => fetchData({ type: 'user', id: data.owner })}>{data.owner}</span>
-										</div>
+			<div className='picFrame' ref={refFrame}>
+				<Masonry elementType={'div'} options={{ transitionDuration: '0.5s' }} disableImagesLoaded={false} updateOnEachImageLoad={false}>
+					{Pics.map((data, idx) => {
+						return (
+							<article key={idx}>
+								<div className='inner'>
+									<img
+										className='pic'
+										src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
+										alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
+									/>
+									<h2>{data.title}</h2>
+
+									<div className='profile'>
+										<img
+											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+											alt={data.owner}
+											onError={(e) => {
+												//만약 사용자가 프로필 이미지를 올리지 않았을때 엑박이 뜨므로
+												//onError이벤트를 연결해서 대체이미지 출력
+												e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif');
+											}}
+										/>
+										<span onClick={() => fetchData({ type: 'user', id: data.owner })}>{data.owner}</span>
 									</div>
-								</article>
-							);
-						})}
-					</Masonry>
-				</div>
-			)}
+								</div>
+							</article>
+						);
+					})}
+				</Masonry>
+			</div>
 		</Layout>
 	);
 }
