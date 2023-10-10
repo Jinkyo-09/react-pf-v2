@@ -4,9 +4,10 @@ import { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-component';
 
 export default function Gallery() {
+	const refFrame = useRef(null);
 	const refInput = useRef(null);
 	const [Pics, setPics] = useState([]);
-	const [Loader, setLoader] = useState(true);
+	const [Loader, setLoader] = useState(false);
 	const my_id = '199299808@N06';
 
 	const fetchData = async (opt) => {
@@ -40,7 +41,21 @@ export default function Gallery() {
 			return alert('검색어에 해당하는 이미지를 찾을수 없습니다.');
 		}
 
+		//실제 데이터가 state에 담기는 순간 가상돔이 생성되는 순간
 		setPics(json.photos.photo);
+
+		let count = 0;
+		const imgs = refFrame.current?.querySelectorAll('img');
+
+		imgs.forEach((img, idx) => {
+			img.onload = () => {
+				++count;
+				console.log('현재 로딩된 이미지 개수', count);
+				if (count === imgs.length) {
+					console.log('모든 이미지 소스 랜더링 완료');
+				}
+			};
+		});
 	};
 
 	useEffect(() => {
@@ -81,7 +96,7 @@ export default function Gallery() {
 			{Loader ? (
 				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
 			) : (
-				<div className='picFrame'>
+				<div className='picFrame' ref={refFrame}>
 					<Masonry
 						elementType={'div'} // masonry 컴포넌트가 변환될 태그명 지정
 						options={{ transitionDuration: '0.5s' }} // 박스 모션시 트랜지션 시간 설정
